@@ -268,7 +268,7 @@ If you use this work, please cite:
 
 ```bibtex
 @article{cockayne2025dermformer,
-  author = {Matthew J. Cockayne and others},
+  author = {Matthew J. Cockayne, Marco Ortolani, Baidaa Al-Bander},
   title = {DermFormer: Nested Multi-modal Vision Transformers for Robust Skin Cancer Detection},
   journal = {Pattern Analysis and Applications},
   year = {2025},

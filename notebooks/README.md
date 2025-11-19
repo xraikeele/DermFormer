@@ -1,33 +1,36 @@
-# DermFormer Interactive Demo
+# DermFormer Interactive Demos
 
-This directory contains interactive demonstrations of the DermFormer model for your portfolio.
+This directory contains interactive demonstrations of the paper DermFormer: Nested Multi-modal Vision Transformers for Robust Skin Cancer Detection
 
-## Files
+## Notebooks
 
-- **DermFormer_Interactive_Demo.ipynb**: Main interactive notebook with full functionality
-- **setup_demo_data.py**: Helper script to prepare sample cases for demonstration
+- **DermFormer_Interactive_Demo.ipynb**: Interactive inference demo with model predictions and visualizations
+- **DermFormer_Robustness_Demo.ipynb**: Robustness testing demo showing corruption and noise resilience
+
+## Helper Scripts
+
+- **extract_demo_from_csv.py**: Extract sample cases from Derm7pt metadata
+- **sample_data/**: Directory containing demo images and metadata
 
 ## Quick Start
 
-### 1. Prepare Sample Data
+### 1. Activate Environment
 
 ```bash
+conda activate dermformer
 cd notebooks
-python setup_demo_data.py
 ```
 
-This will copy a few representative cases from the Derm7pt dataset for demonstration.
+### 2. Run a Notebook
 
-### 2. Run the Notebook
-
-**Local Jupyter:**
+**Interactive Inference Demo:**
 ```bash
 jupyter notebook DermFormer_Interactive_Demo.ipynb
 ```
 
-**JupyterLab:**
+**Robustness Testing Demo:**
 ```bash
-jupyter lab DermFormer_Interactive_Demo.ipynb
+jupyter notebook DermFormer_Robustness_Demo.ipynb
 ```
 
 **VS Code:**
@@ -42,35 +45,51 @@ To share on Google Colab:
 1. Upload the notebook to your Google Drive
 2. Upload the model checkpoint: `best_model_97.pth` (211MB)
 3. Create a `sample_data/` folder with a few example images
-4. Share the Colab link in your portfolio
 
 **Colab modifications needed:**
 - Uncomment installation cells (Section 1)
 - Update model path to Google Drive location (Section 2)
 - Uncomment Drive mounting code
 
-## What the Demo Shows
+## What the Demos Show
 
-### Technical Skills
-- ✅ PyTorch model implementation
-- ✅ Multi-modal deep learning
-- ✅ Medical image analysis
-- ✅ Ensemble learning & uncertainty quantification
-- ✅ Data visualization & interpretation
-- ✅ Production ML deployment
+### Demo 1: Interactive Inference
 
-### Interactive Features
+**Technical Skills Demonstrated:**
+- Multi-modal deep learning architecture
+- Medical image classification
+- Ensemble learning with uncertainty quantification
+- Interactive visualization and interpretation
+- Production ML deployment
+
+**Features:**
 1. **Multi-modal inference**: Process clinical + dermoscopic images + metadata
-2. **Branch analysis**: Compare individual model branches (Clinical, Dermoscopic, Combined, Meta)
-3. **Entropy weighting**: Visualize how uncertainty affects ensemble predictions
-4. **Multi-task predictions**: Diagnose 8 different lesion characteristics
-5. **Beautiful visualizations**: Professional matplotlib/seaborn plots
+2. **Branch analysis**: Compare individual model branches (Clinical, Dermoscopic, Combined, Meta-Combined)
+3. **Entropy weighting**: Visualize how prediction confidence affects ensemble weights
+4. **Multi-task predictions**: Diagnose 8 different lesion characteristics simultaneously
+5. **Case studies**: Real Derm7pt examples with ground truth comparison
+
+### Demo 2: Robustness Testing
+
+**Technical Skills Demonstrated:**
+- Model robustness evaluation
+- Systematic corruption and noise testing
+- Performance degradation analysis
+- Statistical visualization
+- Comparative model benchmarking
+
+**Features:**
+1. **Corruption testing**: 18 distortion types (noise, blur, weather, digital artifacts)
+2. **Noise sensitivity**: Gaussian noise injection at multiple intensity levels
+3. **Modality-specific testing**: Separate corruption of clinical vs dermoscopic images
+4. **Performance curves**: Accuracy degradation across severity levels
+5. **Model comparison**: DermFormer vs baseline architectures (TFormer, NEST-DER, NEST-CLI, NEST-MMC)
 
 ### Model Performance
-- Test Accuracy: **76.68%**
-- Best Epoch: 97 (early stopping at 147)
-- Model Size: 211 MB
-- Parameters: ~52M trainable
+- Diagnosis Accuracy: **0.779**
+- F-score: **0.684**
+- Validation Accuracy: **0.741**
+- Model Size: 211 MB (52M parameters)
 
 ## Customization
 
@@ -117,22 +136,23 @@ Add to your portfolio website:
 ### Key Selling Points
 
 Highlight in your portfolio:
-- **76.68% accuracy** on dermatology benchmark
-- **Multi-modal fusion** of clinical, dermoscopic, and metadata
-- **Interpretable AI** with entropy-weighted ensemble
-- **Production-ready** with optimized inference
-- **8 simultaneous tasks** (diagnosis + 7 lesion characteristics)
+- **0.779 diagnosis accuracy** on Derm7pt benchmark
+- **Multi-modal fusion** of clinical, dermoscopic, and patient metadata
+- **Interpretable AI** with entropy-weighted ensemble mechanism
+- **Robust to real-world variations**: Maintains performance under corruption and noise
+- **Multi-task learning**: 8 simultaneous classification tasks
+- **Production-ready** with optimized inference pipeline
 
 ## Next Steps
 
-1. ✅ **Run the notebook locally** to verify everything works
-2. ✅ **Test with sample cases** from Derm7pt dataset
-3. ✅ **Deploy to Google Colab** for public access
-4. ✅ **Add to your portfolio website** with live demo link
-5. 🔄 **Create variations**:
-   - Robustness testing notebook (Portfolio Idea #2)
+1. ✅ **Interactive inference demo created**
+2. ✅ **Robustness testing demo created**
+3. 🔄 **Deploy to Google Colab** for public access
+4. 🔄 **Add to portfolio website** with live demo links
+5. 🔄 **Additional portfolio notebooks**:
    - Attention visualization notebook (Portfolio Idea #3)
-   - Tutorial notebook (Portfolio Idea #9)
+   - Model architecture tutorial (Portfolio Idea #9)
+   - Comparative analysis notebook (Portfolio Idea #4)
 
 ## Troubleshooting
 
@@ -156,7 +176,9 @@ Highlight in your portfolio:
 
 ## Contact
 
-Questions or issues? Contact Matthew Cockayne at [your-email]
+Matthew Cockayne  
+Email: m.j.cockayne@keele.ac.uk  
+GitHub: [@xraikeele](https://github.com/xraikeele)
 
 ---
 
