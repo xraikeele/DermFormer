@@ -1,0 +1,5 @@
+case_num,diagnosis,seven_point,pigment_network,streaks,pigmentation,regression_structures,dots_and_globules,blue_whitish_veil,vascular_structures,level_of_diagnostic_difficulty,elevation,location,sex,management,clinic,derm
+1,basal cell carcinoma,0,absent,absent,absent,absent,absent,absent,arborizing,medium,nodular,abdomen,female,excision,NEL/NEL025.JPG,NEL/Nel026.jpg
+577,melanoma,3,absent,irregular,absent,combination,irregular,absent,absent,low,palpable,upper limbs,female,excision,NAL/Nal019.jpg,NAL/Nal020.jpg
+578,melanoma,7,atypical,irregular,localized in,absent,irregular,present,absent,medium,palpable,lower limbs,female,excision,NAL/Nal021.jpg,NAL/Nal022.jpg
+579,melanoma,1,typical,absent,absent,white areas,regular,absent,within regression,medium,flat,chest,male,excision,NAL/Nal039.jpg,NAL/Nal037.jpg

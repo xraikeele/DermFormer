@@ -4,10 +4,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #from derm7pt.utils import strings2numeric
 #from derm7pt.kerasutils import crop_resize_img
-from utils import strings2numeric
-from kerasutils import crop_resize_img
+from derm7pt.utils import strings2numeric
+from derm7pt.kerasutils import crop_resize_img
 import keras
-from keras.preprocessing.image import load_img
+try:
+    from keras.preprocessing.image import load_img
+except ImportError:
+    from keras.utils import load_img
 
 '''
 from dataset derm7pt https://github.com/jeremykawahara/derm7pt

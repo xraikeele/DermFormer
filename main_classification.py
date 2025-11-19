@@ -31,7 +31,7 @@ from models.NesT.nest_der import nest_der
 #from models.NesT.nest_meta import MM_nest
 #from models.NesT.nest_clider import MM_nest
 from models.NesT.nest_multimodalconcat import nest_MMC
-from models.DermFormer import DermFormer
+from models.DermFormer import DermFormer, MMNestLoss
 from models.MM_resnet50 import resnet50_MMC
 from models.MM_efficientnet import efficientnet_MMC
 
@@ -56,7 +56,11 @@ def setup_model(options, class_num):
     model = DermFormer(class_num)
     if options['cuda']:
         model = model.cuda()
-    return model
+    # Create criterion separately
+    criterion = MMNestLoss(class_weights=None)
+    if options['cuda']:
+        criterion = criterion.cuda()
+    return model, criterion
 
 def model_snapshot(model, new_model_path, old_model_path=None, only_best_model=False):
     if only_best_model and old_model_path:
@@ -73,7 +77,7 @@ def setup_data_loaders(options, derm_data_group):
 
     return train_loader, valid_loader, test_loader
 
-def train_one_epoch(model, train_loader, optimizer, options, log_file, epoch):
+def train_one_epoch(model, criterion, train_loader, optimizer, options, log_file, epoch):
     model.train()
     train_loss = 0.0
     correct = [0] * 8 
@@ -96,28 +100,22 @@ def train_one_epoch(model, train_loader, optimizer, options, log_file, epoch):
 
         optimizer.zero_grad()
         
-        # Forward pass to get model outputs
+        # Forward pass to get model outputs (returns dict)
         outputs = model(meta_data, meta_con, cli_data, der_data)
         
-        #multi label loss
-        loss = torch.true_divide(
-                model.criterion(outputs[0],targets[0])
-                + model.criterion(outputs[1],targets[1])
-                + model.criterion(outputs[2],targets[2])
-                + model.criterion(outputs[3],targets[3])
-                + model.criterion(outputs[4],targets[4])
-                + model.criterion(outputs[5],targets[5])
-                + model.criterion(outputs[6],targets[6])
-                + model.criterion(outputs[7],targets[7]),8
-                )
+        # Use MMNestLoss criterion which expects dict outputs
+        loss = criterion(outputs, targets)
 
         loss.backward()
         avg_loss = loss.item()
         train_loss += avg_loss
         optimizer.step()
 
-        for i, (pred, true) in enumerate(zip(outputs, targets)):
-            pred = pred.argmax(dim=1)
+        # Extract ensemble predictions (last index in each task output)
+        task_keys = ['diag', 'pn', 'bwv', 'vs', 'pig', 'str', 'dag', 'rs']
+        for i, (task_key, true) in enumerate(zip(task_keys, targets)):
+            # Use the ensemble prediction (last element which is always the prediction)
+            pred = outputs[task_key][-1]
             correct[i] += pred.eq(true).sum().item()
             total[i] += true.size(0)
 
@@ -132,7 +130,7 @@ def train_one_epoch(model, train_loader, optimizer, options, log_file, epoch):
     log_file.write(f"Training Loss: {train_loss / len(train_loader):.4f}, Accuracy: {accuracy:.4f}\n")
     return train_loss / len(train_loader), accuracy
 
-def validate(model, valid_loader, options, label_t, class_num, log_file):
+def validate(model, criterion, valid_loader, options, label_t, class_num, log_file):
     model.eval()
     avg_valid_loss = 0
     correct = [0] * 8
@@ -142,6 +140,7 @@ def validate(model, valid_loader, options, label_t, class_num, log_file):
     lab_list = [[] for _ in range(8)]
 
     label_names = ['diag', 'pn', 'bwv', 'vs', 'pig', 'str', 'dag', 'rs']
+    task_keys = ['diag', 'pn', 'bwv', 'vs', 'pig', 'str', 'dag', 'rs']
 
     class_weights = valid_loader.dataset.class_weights
 
@@ -166,26 +165,17 @@ def validate(model, valid_loader, options, label_t, class_num, log_file):
 
             outputs = model(meta_data, meta_con, cli_data, der_data)
             
-            #multi label loss
-            loss = torch.true_divide(
-                    model.criterion(outputs[0],targets[0])
-                    + model.criterion(outputs[1],targets[1])
-                    + model.criterion(outputs[2],targets[2])
-                    + model.criterion(outputs[3],targets[3])
-                    + model.criterion(outputs[4],targets[4])
-                    + model.criterion(outputs[5],targets[5])
-                    + model.criterion(outputs[6],targets[6])
-                    + model.criterion(outputs[7],targets[7]),8
-                    )
+            # Use MMNestLoss criterion
+            loss = criterion(outputs, targets)
             avg_valid_loss += loss.item()
 
-            for i, (pred, true) in enumerate(zip(outputs, targets)):
-                pred = pred.argmax(dim=1)  # Convert logits to predicted class indices
+            for i, (task_key, true) in enumerate(zip(task_keys, targets)):
+                # Get ensemble prediction (last element)
+                pred = outputs[task_key][-1]
                 val_confusion_matrices[i].update(pred.cpu().numpy(), true.cpu().numpy())
 
-                # Access softmax probabilities correctly for each label
-                logits = outputs[i]
-                probs = F.softmax(logits, dim=1).cpu().numpy()
+                # Get ensemble probabilities (second to last element)
+                probs = outputs[task_key][-2].cpu().numpy()
 
                 # Check for NaNs or Infs in probabilities before extending pro_list
                 if np.isnan(probs).any() or np.isinf(probs).any():
@@ -211,7 +201,7 @@ def validate(model, valid_loader, options, label_t, class_num, log_file):
     return avg_valid_loss, accuracy
 
 
-def test(model, test_loader, options, log_file):
+def test(model, criterion, test_loader, options, log_file):
     avg_test_loss = 0
     log_file.write(f"Model Test: \n")
     test_confusion_matrices = [ConfusionMatrix(num_classes=options['class_num'], labels=options['labels']) for _ in range(8)]
@@ -222,10 +212,10 @@ def test(model, test_loader, options, log_file):
 
     # Define label names corresponding to your outputs
     label_names = ['diag', 'pn', 'bwv', 'vs', 'pig', 'str', 'dag', 'rs']
+    task_keys = ['diag', 'pn', 'bwv', 'vs', 'pig', 'str', 'dag', 'rs']
     
     # Get class weights from the dataset
     class_weights = test_loader.dataset.class_weights
-    #weights = [class_weights[i].cuda() if options['cuda'] else class_weights[i] for i in range(8)]
 
     with torch.no_grad():
         for der_data, cli_data, meta_data, meta_con, target in test_loader:
@@ -244,40 +234,32 @@ def test(model, test_loader, options, log_file):
 
             if options['cuda']:
                 der_data, cli_data, meta_data = der_data.cuda(), cli_data.cuda(), meta_data.cuda().float()
-                #der_data, cli_data, meta_data = Variable(der_data), Variable(cli_data), Variable(meta_data)
                 meta_data = meta_data.long()
                 meta_con = meta_con.long()
 
             # Forward pass
             outputs = model(meta_data, meta_con, cli_data, der_data)
 
-            #multi label loss
-            loss = torch.true_divide(
-                    model.criterion(outputs[0],targets[0])
-                    + model.criterion(outputs[1],targets[1])
-                    + model.criterion(outputs[2],targets[2])
-                    + model.criterion(outputs[3],targets[3])
-                    + model.criterion(outputs[4],targets[4])
-                    + model.criterion(outputs[5],targets[5])
-                    + model.criterion(outputs[6],targets[6])
-                    + model.criterion(outputs[7],targets[7]),8
-                    )
+            # Use MMNestLoss criterion
+            loss = criterion(outputs, targets)
             avg_test_loss += loss.item()
 
-            for i, (pred, true) in enumerate(zip(outputs, targets)):
-                pred_np = pred.argmax(dim=1).cpu().numpy() 
+            for i, (task_key, true) in enumerate(zip(task_keys, targets)):
+                # Get ensemble prediction (last element)
+                pred = outputs[task_key][-1]
+                pred_np = pred.cpu().numpy()
                 target_np = true.cpu().numpy()
                 if len(target_np.shape) > 1:
                     target_np = target_np.squeeze()
                 test_confusion_matrices[i].update(pred_np, target_np)
 
-                # Correctly access softmax probabilities
-                logits = outputs[i]  # Use the logits for softmax 
-                pro_list[i].extend(F.softmax(logits, dim=1).cpu().numpy()) 
+                # Get ensemble probabilities (second to last element)
+                probs = outputs[task_key][-2]
+                pro_list[i].extend(probs.cpu().numpy()) 
                 lab_list[i].extend(true.cpu().numpy())
 
             # Calculate accuracy
-            correct = sum([pred.eq(targets[i]).sum().item() for i, pred in enumerate(outputs)])
+            correct = sum([outputs[task_key][-1].eq(targets[i]).sum().item() for i, task_key in enumerate(task_keys)])
             total = sum([targets[i].size(0) for i in range(8)])
             total_correct += correct
             total_samples += total
@@ -340,7 +322,7 @@ def main(options):
     #derm_data_group = load_dataset(dir_release=options['dir_release'])
     #mata = derm_data_group.meta_train.values
     #print(mata)
-    model = setup_model(options, options['class_num'])
+    model, criterion = setup_model(options, options['class_num'])
     train_loader, valid_loader, test_loader = setup_data_loaders(options, derm_data_group)
     #print("Class weights tensor:", class_weights)
     #Current LR and optimiser
@@ -355,11 +337,11 @@ def main(options):
     patience_counter = 0  # Early stopping counter
     try:
         for epoch in range(options['epochs']):
-            train_loss, train_accuracy = train_one_epoch(model, train_loader, optimizer, options, log_file, epoch)
+            train_loss, train_accuracy = train_one_epoch(model, criterion, train_loader, optimizer, options, log_file, epoch)
             train_losses.append(train_loss)
             train_acc.append(train_accuracy)
 
-            valid_loss, valid_accuracy = validate(model, valid_loader, options, options['labels'], options['class_num'], log_file)
+            valid_loss, valid_accuracy = validate(model, criterion, valid_loader, options, options['labels'], options['class_num'], log_file)
             valid_losses.append(valid_loss)
             valid_acc.append(valid_accuracy)
 
@@ -394,7 +376,7 @@ def main(options):
             print(old_model_path)
             model.load_state_dict(torch.load(old_model_path))
             model.eval()
-            test(model, test_loader, options, log_file)
+            test(model, criterion, test_loader, options, log_file)
 
         plot_metrics(train_losses, valid_losses, train_acc, valid_acc, options['log_path'], options['epochs'])
 

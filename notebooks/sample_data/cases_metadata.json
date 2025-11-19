@@ -1,0 +1,86 @@
+[
+  {
+    "case_id": "case_001",
+    "case_num": 1,
+    "diagnosis": "Basal Cell Carcinoma",
+    "clinical_img": "case_001_clinical.jpg",
+    "dermoscopic_img": "case_001_dermoscopic.jpg",
+    "metadata": {
+      "elevation": "raised",
+      "sex": "female",
+      "location": "abdomen",
+      "lesion_type": "typical",
+      "age_group": "30-50"
+    },
+    "clinical_features": {
+      "seven_point": "0",
+      "pigment_network": "absent",
+      "streaks": "absent",
+      "pigmentation": "absent",
+      "regression": "absent",
+      "dots_and_globules": "absent",
+      "blue_whitish_veil": "absent",
+      "vascular_structures": "arborizing"
+    },
+    "original_paths": {
+      "clinical": "NEL/NEL025.JPG",
+      "dermoscopic": "NEL/Nel026.jpg"
+    }
+  },
+  {
+    "case_id": "case_577",
+    "case_num": 577,
+    "diagnosis": "Melanoma",
+    "clinical_img": "case_577_clinical.jpg",
+    "dermoscopic_img": "case_577_dermoscopic.jpg",
+    "metadata": {
+      "elevation": "raised",
+      "sex": "female",
+      "location": "upper extremity",
+      "lesion_type": "typical",
+      "age_group": "30-50"
+    },
+    "clinical_features": {
+      "seven_point": "3",
+      "pigment_network": "absent",
+      "streaks": "irregular",
+      "pigmentation": "absent",
+      "regression": "combination",
+      "dots_and_globules": "irregular",
+      "blue_whitish_veil": "absent",
+      "vascular_structures": "absent"
+    },
+    "original_paths": {
+      "clinical": "NAL/Nal019.jpg",
+      "dermoscopic": "NAL/Nal020.jpg"
+    }
+  },
+  {
+    "case_id": "case_578",
+    "case_num": 578,
+    "diagnosis": "Melanoma",
+    "clinical_img": "case_578_clinical.jpg",
+    "dermoscopic_img": "case_578_dermoscopic.jpg",
+    "metadata": {
+      "elevation": "raised",
+      "sex": "female",
+      "location": "lower extremity",
+      "lesion_type": "atypical",
+      "age_group": "30-50"
+    },
+    "clinical_features": {
+      "seven_point": "7",
+      "pigment_network": "atypical",
+      "streaks": "irregular",
+      "pigmentation": "localized in",
+      "regression": "absent",
+      "dots_and_globules": "irregular",
+      "blue_whitish_veil": "present",
+      "vascular_structures": "absent"
+    },
+    "original_paths": {
+      "clinical": "NAL/Nal021.jpg",
+      "dermoscopic": "NAL/Nal022.jpg"
+    }
+  }
+]

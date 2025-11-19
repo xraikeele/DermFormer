@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Mac
+.DS_Store
+
+# Environment
+.env
+*.env
+
+# Logs
+*.log
+logs/
+
+# Datasets - Don't commit large datasets
+data/raw/
+data/processed/
+datasets/
+
+# Training outputs - Keep structure but ignore large files
+experiments/*/models/*.pth
+experiments/*/models/*.pt
+experiments/*/logs/*.log
+experiments/*/logs/*.txt
+
+# Checkpoints and weights (except the best model if you want to keep it accessible)
+# If you want to keep best_model_*.pth accessible, comment out the line below
+# experiments/*/models/best_model_*.pth
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Cache
+.cache/
+*.cache
+
+# Model outputs
+outputs/
+results/
+*.pkl
+*.pickle
+
+# Large data files
+*.h5
+*.hdf5
+*.npy
+*.npz
+
+# Plots and figures (if regenerable)
+# *.png
+# *.jpg
+# *.pdf
+
+# OS
+Thumbs.db
+
+# tex files
+*.tex

@@ -6,7 +6,7 @@ import timm
 import torch 
 import torch.nn as nn
 from torchinfo import summary
-from models.tab_transformer_noMLP import TabTransformer
+from models.tabtransformer.tab_transformer_noMLP import TabTransformer
 import torch.nn.functional as F
 
 class AttentionLayer(nn.Module):
