@@ -120,8 +120,6 @@ The notebook includes functions for:
 
 You can create custom visualizations by accessing the `results` dictionary.
 
-```
-
 ### Key Selling Points
 
 Highlight in your portfolio:
