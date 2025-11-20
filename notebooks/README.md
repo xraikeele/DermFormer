@@ -120,17 +120,6 @@ The notebook includes functions for:
 
 You can create custom visualizations by accessing the `results` dictionary.
 
-## Portfolio Integration
-
-### Website Embedding
-
-Add to your portfolio website:
-
-```html
-<h3>DermFormer: Multi-Modal Skin Lesion Diagnosis</h3>
-<p>Interactive deep learning demo for medical image analysis</p>
-<a href="link-to-colab-notebook" class="btn">🚀 Try Live Demo</a>
-<a href="link-to-github" class="btn">💻 View Code</a>
 ```
 
 ### Key Selling Points
@@ -142,17 +131,6 @@ Highlight in your portfolio:
 - **Robust to real-world variations**: Maintains performance under corruption and noise
 - **Multi-task learning**: 8 simultaneous classification tasks
 - **Production-ready** with optimized inference pipeline
-
-## Next Steps
-
-1. ✅ **Interactive inference demo created**
-2. ✅ **Robustness testing demo created**
-3. 🔄 **Deploy to Google Colab** for public access
-4. 🔄 **Add to portfolio website** with live demo links
-5. 🔄 **Additional portfolio notebooks**:
-   - Attention visualization notebook (Portfolio Idea #3)
-   - Model architecture tutorial (Portfolio Idea #9)
-   - Comparative analysis notebook (Portfolio Idea #4)
 
 ## Troubleshooting
 
