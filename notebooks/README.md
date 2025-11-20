@@ -1,6 +1,10 @@
 # DermFormer Interactive Demos
 
-This directory contains interactive demonstrations of the paper DermFormer: Nested Multi-modal Vision Transformers for Robust Skin Cancer Detection
+[![Paper](https://img.shields.io/badge/Paper-Pattern%20Analysis%20and%20Applications-blue)](https://doi.org/10.1007/s10044-025-01572-0)
+[![DOI](https://img.shields.io/badge/DOI-10.1007%2Fs10044--025--01572--0-blue)](https://doi.org/10.1007/s10044-025-01572-0)
+[![Read Online](https://img.shields.io/badge/Read-Free%20Access-green)](https://rdcu.be/eQT3s)
+
+This directory contains interactive demonstrations of the paper **DermFormer: Nested Multi-modal Vision Transformers for Robust Skin Cancer Detection** published in *Pattern Analysis and Applications* (2025).
 
 ## Notebooks
 
