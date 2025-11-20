@@ -1,6 +1,15 @@
 # DermFormer: Nested Multi-modal Vision Transformers for Robust Skin Cancer Detection
 
+[![Paper](https://img.shields.io/badge/Paper-Pattern%20Analysis%20and%20Applications-blue)](https://doi.org/10.1007/s10044-025-01572-0)
+[![DOI](https://img.shields.io/badge/DOI-10.1007%2Fs10044--025--01572--0-blue)](https://doi.org/10.1007/s10044-025-01572-0)
+[![Read Online](https://img.shields.io/badge/Read-Free%20Access-green)](https://rdcu.be/eQT3s)
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.12.1-red.svg)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 A transformer-based multi-modal architecture for skin cancer detection that maintains high diagnostic accuracy while demonstrating robustness to real-world data variations. DermFormer achieves state-of-the-art performance (diagnosis accuracy: 0.779, F-score: 0.684) on the Derm7pt dataset.
+
+**Published in:** *Pattern Analysis and Applications*, Volume 28, Article 194 (2025)
 
 ## Overview
 
@@ -267,15 +276,25 @@ The seven-point checklist provides clinical interpretability by aligning model o
 If you use this work, please cite:
 
 ```bibtex
-@article{cockayne2025dermformer,
-  author = {Matthew J. Cockayne, Marco Ortolani, Baidaa Al-Bander},
-  title = {DermFormer: Nested Multi-modal Vision Transformers for Robust Skin Cancer Detection},
+@article{cockayne_dermformer_2025,
+  title = {{DermFormer}: nested multi-modal vision transformers for robust skin cancer detection},
+  volume = {28},
+  issn = {1433-755X},
+  url = {https://doi.org/10.1007/s10044-025-01572-0},
+  doi = {10.1007/s10044-025-01572-0},
+  abstract = {Deep learning shows strong potential for automated skin cancer detection, but clinical adoption requires models that maintain high diagnostic accuracy while demonstrating robustness to real-world data variations. Multi-modal approaches integrating dermoscopic images, clinical images, and patient metadata achieve superior performance compared to single-modality methods. However, existing fusion strategies inadequately address the performance-robustness trade-off, often improving accuracy on lab-quality data while compromising reliability under corrupted or noisy inputs typical of real-world clinical settings. We propose DermFormer, a transformer-based multi-modal architecture addressing this limitation through entropy-weighted ensemble classification heads and a hybrid fusion mechanism that preserves uni-modal representations while capturing inter-modality relationships. Our method combines dermoscopic and clinical images with tabular metadata using hierarchical transformers and cross-attention for modality integration. The entropy-weighted ensemble dynamically adjusts modality contributions based on prediction confidence, enabling dynamic feature selection when individual modalities are corrupted. We evaluate DermFormer on the Derm7pt dataset for multi-class diagnosis and seven-point checklist classification under clean and corrupted conditions. DermFormer achieves state-of-the-art performance (diagnosis accuracy: 0.779, F-score: 0.684) while maintaining superior robustness to common corruptions including Gaussian noise, motion blur, and JPEG compression. By maintaining performance under realistic clinical conditions, this work addresses a critical adoption barrier for automated diagnostic systems, enabling reliable AI-assisted dermatology across diverse healthcare settings and supporting earlier melanoma detection at scale. Code available at: https://github.com/xraikeele/DermFormer},
+  number = {4},
   journal = {Pattern Analysis and Applications},
+  author = {Cockayne, Matthew J. and Ortolani, Marco and Al-Bander, Baidaa},
+  month = nov,
   year = {2025},
-  note = {In press},
-  url = {https://github.com/xraikeele/DermFormer}
+  pages = {194},
 }
 ```
+
+**Paper Links:**
+- [Publisher (Open Access)](https://doi.org/10.1007/s10044-025-01572-0)
+- [Free Read-Only Access](https://rdcu.be/eQT3s)
 
 ## License
 
